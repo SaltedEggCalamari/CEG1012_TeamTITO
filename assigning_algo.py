@@ -13,7 +13,6 @@
 # Description:  Function extracts info from inputs, sorts and assigns them based on destination info.
 #               This is done using the objects built-in assign functions. 
 #               Then it checks on which passenger and shuttles are unassigned and adds them into a list
-#               Returns list if 
 
 def assign_passengers(passengers, shuttles):
 
