@@ -6,6 +6,15 @@
 
 using namespace std;
 
+/* Forward Declaration of friend operator overload functions */
+class Passenger;
+class Shuttle;
+bool operator==(const Shuttle& lhs, const Passenger& rhs);
+bool operator<(const Shuttle& lhs, const Passenger& rhs);
+bool operator>(const Shuttle& lhs, const Passenger& rhs);
+
+
+/* Class Declarations */
 class Passenger
 {
 private:
@@ -15,27 +24,23 @@ private:
     bool assigned;
 
 public:
+	Passenger(){
+		passenger_id = "";
+		destination = "";
+		time_of_arrival = "";
+		assigned = false;
+	}
 	Passenger(string p_id, string dest, string toa) {
 		passenger_id = p_id;
 		destination = dest;
 		time_of_arrival = toa;
         assigned = false;
 	}
-
-    void get_info(){
-        cout << "id: " << passenger_id
-            << "\nDestination: " << destination
-            << "\nTime of arrival: " << time_of_arrival
-            << "\nAssigned?: " << assigned;        
-    }
-
-    void set_assigned(bool input){
-        if(input == true){
-            assigned = true;
-        } else{
-            assigned = false;
-        }
-    }
+    void get_info();
+    void set_assigned(bool input);
+	friend bool operator==(const Shuttle& lhs, const Passenger& rhs);
+	friend bool operator<(const Shuttle& lhs, const Passenger& rhs);
+	friend bool operator>(const Shuttle& lhs, const Passenger& rhs);	
 };
 
 class Shuttle
@@ -47,33 +52,39 @@ private:
     bool assigned;
 
 public:
+	Shuttle() {
+        shuttle_id = "";
+		charging_point = "";
+		time_of_arrival = "";
+        assigned = false;
+	}
 	Shuttle(string s_id, string cp, string toa) {
         shuttle_id = s_id;
 		charging_point = cp;
 		time_of_arrival = toa;
         assigned = false;
 	}
-
-    void get_info(){
-        cout << "id: " << shuttle_id
-            << "\nCharging point: " << charging_point
-            << "\nTime of arrival: " << time_of_arrival
-            << "\nAssigned?: " << assigned;        
-    }
-
+    
+	void get_info();
     void set_assigned(bool input);
 
+	friend bool operator==(const Shuttle& lhs, const Passenger& rhs);
+	friend bool operator<(const Shuttle& lhs, const Passenger& rhs);
+	friend bool operator>(const Shuttle& lhs, const Passenger& rhs);
 };
 
 class ScheduleEntry
 {
 private:
-	string schedule_entry_id;
+	int schedule_entry_id;
 	Shuttle shuttle;
 	Passenger passenger;
 
 public:
-	void set_pair(const Shuttle& shuttle);
+	ScheduleEntry(int id){
+		schedule_entry_id = id;
+	}
+	void set_pair(const Shuttle& shuttle, const Passenger& passenger);
     void edit_pair(const string& label, const Shuttle& updatedShuttle);
     void delete_pair(const string& label);
     void get_pair();
@@ -82,15 +93,14 @@ public:
 class RoutePlanner
 {
 private:
-	vector<ScheduleEntry> ScheduleEntry;
+	vector<ScheduleEntry> schedule_entries;
 
 public:
 	void import_schedule(const string& shuttleFile, const string& passengerFile);
-	void compute_schedule();
+	vector<ScheduleEntry> RoutePlanner::compute_schedule(const vector<Shuttle>, const vector<Passenger>);
 	void get_schedule();
 	void export_schedule(const string& outputFile);
 };
-
 
 
 
