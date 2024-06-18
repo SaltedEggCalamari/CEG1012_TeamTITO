@@ -38,6 +38,10 @@ public:
 	}
     void get_info();
     void set_assigned(bool input);
+	std::string get_time_of_arrival() const { return time_of_arrival; }
+	std::string passenger_id() const { return passenger_id; }
+	std::string get_destination() const { return destination; }
+	
 	friend bool operator==(const Shuttle& lhs, const Passenger& rhs);
 	friend bool operator<(const Shuttle& lhs, const Passenger& rhs);
 	friend bool operator>(const Shuttle& lhs, const Passenger& rhs);	
@@ -67,6 +71,9 @@ public:
     
 	void get_info();
     void set_assigned(bool input);
+	std::string get_time_of_arrival() const { return time_of_arrival; }
+	std::string shuttle_id() const { return shuttle_id; }
+	std::string get_charging_point() const { return charging_point; }
 
 	friend bool operator==(const Shuttle& lhs, const Passenger& rhs);
 	friend bool operator<(const Shuttle& lhs, const Passenger& rhs);

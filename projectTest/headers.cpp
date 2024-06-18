@@ -1,12 +1,15 @@
 /* Custom inclusions */
 #include "headers.h"
 
+
 /* Library inclusions */
 #include <string>
 #include <iostream>
 #include <chrono>
 #include <ctime>
 #include <vector>
+#include <sstream>
+#include <algorithm>
 
 
 /* Passenger functions */
@@ -36,6 +39,18 @@ void Shuttle::set_assigned(bool input){
     else {assigned = false;}
 }
 
+/*convert time string to format time*/
+int timeToMinutes(const std::string& time) {
+    std::istringstream ss(time);
+    int hours, minutes;
+    char colon, am_pm;
+    ss >> hours >> colon >> minutes >> am_pm >> am_pm;
+    
+    if (hours == 12) hours = 0; // handle 12 AM and 12 PM cases
+    if (am_pm == 'p' || am_pm == 'P') hours += 12; // convert PM to 24-hour format
+    
+    return hours * 60 + minutes;
+}
 
 /* Friend functions */
 bool operator==(const Shuttle& lhs, const Passenger& rhs){
@@ -82,14 +97,21 @@ void RoutePlanner::import_schedule(const string& shuttleFile, const string& pass
 vector<ScheduleEntry> RoutePlanner::compute_schedule(vector<Shuttle> shuttles, vector<Passenger> passengers){
     
     /* Sorting algorithm */
+    std::sort(shuttles.begin(), shuttles.end(), [](const Shuttle& a, const Shuttle& b) {
+        if (a.get_charging_point() == b.get_charging_point()) {                                     // Check if charging points are the same
+            return timeToMinutes(a.get_time_of_arrival()) < timeToMinutes(b.get_time_of_arrival()); // Compare by time of arrival if same
+        }
+        return a.get_charging_point() < b.get_charging_point();                                     // Otherwise, compare by charging point
+    });
+
+    std::sort(passengers.begin(), passengers.end(), [](const Passenger& a, const Passenger& b) {    
+        if (a.get_destination() == b.get_destination()) {                                           // Check if destinations are the same
+            return timeToMinutes(a.get_time_of_arrival()) < timeToMinutes(b.get_time_of_arrival()); // If so, compare by time of arrival
+        }
+        return a.get_destination() < b.get_destination();                                           // Otherwise, compare by destination
+    });
     
-    
-    
-    
-    
-    
-    
-    
+
     /* Matching algorithm */
     size_t index_s = 0, index_p = 0;                                                // Initialise pointers for vectors
     int pair_id = 1;                                                                // Initialise id for ScheduleEntry
