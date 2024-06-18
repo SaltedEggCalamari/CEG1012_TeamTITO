@@ -54,21 +54,25 @@ int timeToMinutes(const std::string& time) {
 
 /* Friend functions */
 bool operator==(const Shuttle& lhs, const Passenger& rhs){
-    if(lhs.charging_point == rhs.destination && lhs.time_of_arrival == rhs.time_of_arrival) {return true;}
+    lhs_placetime = lhs.charging_point + lhs.time_of_arrival
+    rhs_placetime = rhs.destination + rhs.time_of_arrival
+    if(lhs_placetime == rhs_place) {return true;}
     else {return false;}
 }
 
 bool operator<(const Shuttle& lhs, const Passenger& rhs){
-    if(lhs.charging_point < rhs.destination && lhs.time_of_arrival == rhs.time_of_arrival) {return true;}
+    lhs_placetime = lhs.charging_point + lhs.time_of_arrival
+    rhs_placetime = rhs.destination + rhs.time_of_arrival
+    if(lhs_placetime < rhs_place) {return true;}
     else {return false;}
 }
 
 bool operator>(const Shuttle& lhs, const Passenger& rhs){
-    if(lhs.charging_point > rhs.destination && lhs.time_of_arrival == rhs.time_of_arrival) {return true;}
+    lhs_placetime = lhs.charging_point + lhs.time_of_arrival
+    rhs_placetime = rhs.destination + rhs.time_of_arrival
+    if(lhs_placetime > rhs_place) {return true;}
     else {return false;}    
 }
-
-
 
 
 /* ScheduleEntry functions */
