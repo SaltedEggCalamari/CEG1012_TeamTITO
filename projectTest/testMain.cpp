@@ -1,4 +1,5 @@
 #include "headers.h"
+#include "headers.cpp"
 
 #include <iostream>
 #include <string>
@@ -20,7 +21,7 @@ int main(){
     passengers = planner.import_passenger(passengerFilePath);
     shuttles = planner.import_shuttle(shuttleFilePath);
     
-    int option;
+    int option=0;
     do {
         std::cout << "\nMenu:\n";
         std::cout << "1. Create passenger\n";
@@ -86,9 +87,9 @@ int main(){
                 }
 
                 if(deleteSuccess == true){
-                    cout << "Passenger successfully deleted!\n";
+                    std::cout << "Passenger successfully deleted!\n";
                 } else if(deleteSuccess == false){
-                    cout << "Passenger not found!\n";
+                    std::cout << "Passenger not found!\n";
                 }
             
                 break;
@@ -112,9 +113,9 @@ int main(){
                 }
 
                 if(deleteSuccess == true){
-                    cout << "Shuttle successfully deleted!\n";
+                    std::cout << "Shuttle successfully deleted!\n";
                 } else if(deleteSuccess == false){
-                    cout << "Shuttle not found!\n";
+                    std::cout << "Shuttle not found!\n";
                 }
             
                 break;
@@ -146,10 +147,12 @@ int main(){
                 }
 
                 if(updateSuccess == true){
-                    cout << "Passenger successfully updated!\n";
+                    std::cout << "Passenger successfully updated!\n";
                 } else if(updateSuccess == false){
-                    cout << "Passenger not found!\n";
+                    std::cout << "Passenger not found!\n";
                 }
+
+                break;
             }
 
             case 6: {
@@ -177,10 +180,12 @@ int main(){
                 }
 
                 if(updateSuccess == true){
-                    cout << "Shuttle successfully updated!\n";
+                    std::cout << "Shuttle successfully updated!\n";
                 } else if(updateSuccess == false){
-                    cout << "Shuttle not found!\n";
+                    std::cout << "Shuttle not found!\n";
                 }
+
+                break;
             }
             
             case 7: {
@@ -189,9 +194,9 @@ int main(){
                 schedule = planner.compute_schedule(shuttles, passengers);
 
                 if(schedule.size() == 0){
-                    cout << "Schedule is empty" << endl;
+                    std::cout << "Schedule is empty" << endl;
                 } else{
-                    cout << "Schedule successfully created!" << endl;
+                    std::cout << "Schedule successfully created!" << endl;
                 }
 
                 break;
