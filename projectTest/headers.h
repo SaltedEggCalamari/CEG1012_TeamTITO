@@ -20,26 +20,43 @@ class Passenger
 private:
 	string passenger_id;
 	string destination;
-	string time_of_arrival;
+	string arrival_time;
     bool assigned;
 
 public:
 	Passenger(){
 		passenger_id = "";
 		destination = "";
-		time_of_arrival = "";
+		arrival_time = "";
 		assigned = false;
 	}
-	Passenger(string p_id, string dest, string toa) {
+	Passenger(string p_id, string dest, string t) {
 		passenger_id = p_id;
 		destination = dest;
-		time_of_arrival = toa;
+		arrival_time = t;
         assigned = false;
 	}
-    void get_info();
-    void set_assigned(bool input);
-	std::string get_time_of_arrival() const { return time_of_arrival; }
-	std::string passenger_id() const { return passenger_id; }
+    
+	void show_info(){
+		cout << "id: " << passenger_id
+			<< "\nDestination: " << destination
+			<< "\nArrival Time: " << arrival_time
+			<< "\nAssigned?: " << assigned << endl;        
+	}
+	
+	void set_destination(string input){
+		destination = input;
+	}
+	void set_arrival_time(string input){
+		arrival_time = input;
+	}
+	void set_assigned(bool input){
+		if(input == true){assigned = true;}
+		else {assigned = false;}
+	}
+
+	std::string get_passenger_id() const { return passenger_id; }
+	std::string get_arrival_time() const { return arrival_time; }
 	std::string get_destination() const { return destination; }
 	
 	friend bool operator==(const Shuttle& lhs, const Passenger& rhs);
@@ -51,29 +68,45 @@ class Shuttle
 {
 private:
 	string shuttle_id;
-	string charging_point;
-	string time_of_arrival;
+	string destination;
+	string arrival_time;
     bool assigned;
 
 public:
 	Shuttle() {
         shuttle_id = "";
-		charging_point = "";
-		time_of_arrival = "";
+		destination = "";
+		arrival_time = "";
         assigned = false;
 	}
-	Shuttle(string s_id, string cp, string toa) {
+	Shuttle(string s_id, string dest, string t) {
         shuttle_id = s_id;
-		charging_point = cp;
-		time_of_arrival = toa;
+		destination = dest;
+		arrival_time = t;
         assigned = false;
 	}
     
-	void get_info();
-    void set_assigned(bool input);
-	std::string get_time_of_arrival() const { return time_of_arrival; }
-	std::string shuttle_id() const { return shuttle_id; }
-	std::string get_charging_point() const { return charging_point; }
+	void show_info(){
+		cout << "id: " << shuttle_id
+			<< "\nDestination: " << destination
+			<< "\nArrival Time: " << arrival_time
+			<< "\nAssigned?: " << assigned << endl;        
+	}
+    
+	void set_destination(string input){
+		destination = input;
+	}
+	void set_arrival_time(string input){
+		arrival_time = input;
+	}
+	void set_assigned(bool input){
+		if(input == true) {assigned = true;}
+		else {assigned = false;}
+	}
+
+	std::string get_shuttle_id() const { return shuttle_id; }
+	std::string get_arrival_time() const { return arrival_time; }
+	std::string get_destination() const { return destination; }
 
 	friend bool operator==(const Shuttle& lhs, const Passenger& rhs);
 	friend bool operator<(const Shuttle& lhs, const Passenger& rhs);
@@ -88,27 +121,42 @@ private:
 	Passenger passenger;
 
 public:
-	ScheduleEntry(int id){
-		schedule_entry_id = id;
+	ScheduleEntry(int id){schedule_entry_id = id;}
+	
+	void set_pair(const Shuttle&, const Passenger&){
+		this->shuttle = shuttle;
+		this->passenger = passenger;
 	}
-	void set_pair(const Shuttle& shuttle, const Passenger& passenger);
-    void edit_pair(const string& label, const Shuttle& updatedShuttle);
-    void delete_pair(const string& label);
-    void get_pair();
+    void edit_shuttle(const Shuttle&){
+		this->shuttle = shuttle;
+	}
+	void edit_passenger(const Passenger&){
+		this->passenger = passenger;
+	}
+    void show_pair(){
+		cout << "Entry ID: " << this->schedule_entry_id;
+		cout << "\nShuttle info: " << endl;
+		this->shuttle.show_info();
+		cout << "Passenger info: " << endl;
+		this->passenger.show_info();
+	}
+
+	int get_entry_id(){return this->schedule_entry_id;}
+	Shuttle get_shuttle(){return this->shuttle;}
+	Passenger get_passenger(){return this->passenger;}
 };
 
 class RoutePlanner
 {
-private:
-	vector<ScheduleEntry> schedule_entries;
-
 public:
-	void import_schedule(const string& shuttleFile, const string& passengerFile);
-	vector<ScheduleEntry> RoutePlanner::compute_schedule(const vector<Shuttle>, const vector<Passenger>);
-	void get_schedule();
-	void export_schedule(const string& outputFile);
-};
+	vector<Passenger> import_passenger(const string&);
+	vector<Shuttle> import_shuttle(const string&);
+	vector<ScheduleEntry> compute_schedule(const vector<Shuttle>, const vector<Passenger>);
+	void show_all(vector<ScheduleEntry>, vector<Passenger>, vector<Shuttle>);
+	void export_schedule(const string&, vector<ScheduleEntry>);
 
+	void assess_passengers(vector<Passenger>);
+};
 
 
 
