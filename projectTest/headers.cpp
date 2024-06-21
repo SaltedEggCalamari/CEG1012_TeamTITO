@@ -81,6 +81,7 @@ vector<Shuttle> RoutePlanner::import_shuttle(const string& shuttleFile){
 vector<ScheduleEntry> RoutePlanner::compute_schedule(vector<Shuttle> shuttles, vector<Passenger> passengers){
     
     /* Sorting algorithm */
+    std::cout << "Performing sort\n";
     std::sort(shuttles.begin(), shuttles.end(), [](const Shuttle& a, const Shuttle& b) {
         if (a.get_destination() == b.get_destination()) {                                     // Check if charging points are the same
             return timeToMinutes(a.get_arrival_time()) < timeToMinutes(b.get_arrival_time()); // Compare by time of arrival if same
@@ -94,8 +95,11 @@ vector<ScheduleEntry> RoutePlanner::compute_schedule(vector<Shuttle> shuttles, v
         }
         return a.get_destination() < b.get_destination();                                           // Otherwise, compare by destination
     });
+    std::cout << "Sort completed\n";
     
     /* Matching algorithm */
+    std::cout << "Performing match\n";
+
     size_t index_s = 0, index_p = 0;                                                // Initialise pointers for vectors
     int pair_id = 1;                                                                // Initialise id for ScheduleEntry
 
@@ -119,35 +123,33 @@ vector<ScheduleEntry> RoutePlanner::compute_schedule(vector<Shuttle> shuttles, v
         else if(shuttles[index_s] < passengers[index_p]) {index_s++;}               // by incrementing smaller index
     }
 
+    std::cout << "Match completed\n";
     return schedule_vector;                                                         // Returns vector of schedule entries
 }
 
 void RoutePlanner::show_all(vector<ScheduleEntry> schedule, vector<Passenger> u_passengers, vector<Shuttle> u_shuttles){
     int size_schedule=schedule.size(), size_passengers=u_passengers.size(), size_shuttles=u_shuttles.size();
-    
-    size_t index=0;
-    cout << "\nSCHEDULE" << endl;
-    cout << "Number of entries: " << size_schedule << endl;
-    while(index < size_schedule){
-        Shuttle s = schedule[index].get_shuttle();
-        Passenger p = schedule[index].get_passenger();
+        
+    std::cout << "\nSCHEDULE" << endl;
+    std::cout << "Number of entries: " << size_schedule << endl;
+    for(int index=0;index < size_schedule; index++){
+        Shuttle& s = schedule[index].get_shuttle();
+        Passenger& p = schedule[index].get_passenger();
 
-        cout << "ID: " << schedule[index].get_entry_id() << " --> " << s.get_shuttle_id() << " and " << p.get_passenger_id();
+        std::cout << "\nID: " << schedule[index].get_entry_id() << " --> " << s.get_shuttle_id() << " and " << p.get_passenger_id();
     }
 
-    index = 0;
-    cout << "\n\nUNASSIGNED PASSENGERS" << endl;
-    cout << "Number of entries: " << size_passengers << endl;
-    while(index < size_shuttles){
-        cout << "ID: " <<  u_passengers[index].get_passenger_id()
+    std::cout << "\n\nUNASSIGNED PASSENGERS" << endl;
+    std::cout << "Number of entries: " << size_passengers << endl;
+    for(int index=0;index < size_schedule; index++){
+        std::cout << "\nID: " <<  u_passengers[index].get_passenger_id()
         << "\nGoing to " << u_passengers[index].get_destination() << " at " << u_passengers[index].get_arrival_time();
     }
 
-    index = 0;
-    cout << "\n\nUNASSIGNED SHUTTLES" << endl;
-    cout << "Number of entries: " << size_shuttles << endl;
-    while(index < size_passengers){
-        cout << "ID: " <<  u_shuttles[index].get_shuttle_id()
+    std::cout << "\n\nUNASSIGNED SHUTTLES" << endl;
+    std::cout << "Number of entries: " << size_shuttles << endl;
+    for(int index=0;index < size_schedule; index++){
+        std::cout << "\nID: " <<  u_shuttles[index].get_shuttle_id()
         << "\nGoing to " << u_shuttles[index].get_destination() << " at " << u_shuttles[index].get_arrival_time();
     }
 
@@ -248,12 +250,12 @@ void RoutePlanner::assess_passengers(vector<Passenger> passengers){
         }
     }
 
-    cout << "Top 3 destinations:" << endl;
-    cout << "1. " << d_first
+    std::cout << "Top 3 destinations:" << endl;
+    std::cout << "1. " << d_first
         << "\n2. " << d_second
         << "\n3. " << d_third << endl;
-    cout << "Top 3 timings:" << endl;
-    cout << "1. " << t_first
+    std::cout << "Top 3 timings:" << endl;
+    std::cout << "1. " << t_first
         << "\n2. " << t_second
         << "\n3. " << t_third << endl;
 }
