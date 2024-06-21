@@ -1,7 +1,8 @@
+#ifndef HEADERS
+#define HEADERS
+
 #include <string>
 #include <iostream>
-#include <chrono>
-#include <ctime>
 #include <vector>
 
 using namespace std;
@@ -158,7 +159,7 @@ public:
 	void assess_passengers(vector<Passenger>);
 };
 
-
+#endif
 
 
 
